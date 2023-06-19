@@ -1,14 +1,12 @@
 <?php
-    use PHPMailer\PHPMailer\PHPMailer;
+
+    use PHPMailer\PHPMailer\SMTP;
     use PHPMailer\PHPMailer\Exception;
+    use PHPMailer\PHPMailer\PHPMailer;
 
-    set_include_path(get_include_path() . PATH_SEPARATOR . __DIR__);
-
-    require("phpmailer/src/Exception.php");
-    require("phpmailer/src/PHPMailer.php");
-    require("phpmailer/src/SMTP.php");
-
-    require("vendor/autoload.php");
+    require("../phpmailer/src/Exception.php");
+    require("../phpmailer/src/PHPMailer.php");
+    require("../phpmailer/src/SMTP.php");
 
     require("../database.php");
     session_start();
@@ -30,36 +28,31 @@
             while($row = mysqli_fetch_assoc($emailQuery)){
             $getEmail = $row["email"];
             }
-            // header("Location: reset_password.php?email=$getEmail");
             $mail = new PHPMailer(true);
-            $mail->isSMTP();
-            $mail->Host = 'smtp.gmail.com'; 
-            $mail->SMTPAuth   = true;                  
-            $mail->Username   = 'thetmomsoe@gmail.com'; 
-            $mail->Password   = 'kkobxuecficgobqw'; 
-            $mail->SMTPSecure = 'ssl';
-            $mail->Port       = 465;  
-            
-            $mail->setFrom('thetmomsoe@gmail.com');
-            $mail->addAddress($getEmail);
-            $mail->isHTML(true);
-            $mail->Subject = 'Reset Password For Your Gmail';
-            $mail->Body    = "http://localhost/php-ojt-tutorials/Tutorial_10/auth/reset_password.php?email=".$getEmail;
+            try {
+              $mail->isSMTP();
+              $mail->Host = 'smtp.gmail.com'; 
+              $mail->SMTPAuth   = true;                  
+              $mail->Username   = 'thetmomsoe@gmail.com'; 
+              $mail->Password   = 'kkobxuecficgobqw'; 
+              $mail->SMTPSecure = 'ssl';
+              $mail->Port       = 465;  
+              
+              $mail->setFrom('thetmomsoe@gmail.com');
+              $mail->addAddress($getEmail);
+              $mail->isHTML(true);
+              $mail->Subject = 'Reset Password For Your Gmail';
+              $mail->Body    = "http://localhost/php-ojt-tutorials/Tutorial_10/auth/reset_password.php?email=".$getEmail;
+              $mail->SMTPDebug = SMTP::DEBUG_SERVER; 
+              $mail->send();
+              header("Location: ../index.php");
 
-            $mail->send();
-            echo "
-            <script>
-            alert('sent successfully');
-            </script>
-            ";
-
-            header("Location: index.php");
-
-        }
+            }catch (Exception $e) {
+              echo 'Email could not be sent. Error: ' . $mail->ErrorInfo;
+            }
+          }
         }
     }
-  // kkobxuecficgobqw
-  // http://localhost/php-ojt-tutorials/Tutorial_10/auth/reset_password.php?email=thetmonmyint@gmail.com
 ?>
 
 <!DOCTYPE html>
