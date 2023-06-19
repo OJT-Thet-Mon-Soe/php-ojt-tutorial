@@ -1,0 +1,46 @@
+.wrapper{
+  width: 80%;
+  margin: 150px auto 0;
+}
+
+.card-header{
+  font-size: 25px;
+  font-weight: 500;
+}
+
+.create-box{
+  width: 40%;
+  margin: 150px auto 0;
+}
+
+.create-box .input-label{
+  margin-top: 10px;
+}
+
+.btn-box{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.error-msg{
+  color: #ff0000;
+}
+
+.alert-box{
+  display: flex;
+  justify-content: right;
+}
+
+.success-alert{
+  padding: 15px 30px;
+  border-radius: 5px;
+  background-color: #71a7bb;
+  color: #ffffff;
+}
+
+.detail-ttl{
+  font-size: 25px;
+  font-weight: 500;
+}

@@ -1,0 +1,33 @@
+.wrapper{
+  width: 60%;
+  margin: 100px auto;
+  border: 1px solid #1e1d1d;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.cmn-ttl{
+  font-size: 25px;
+  border-bottom: 2px solid #000000;
+  padding: 20px 0;
+}
+
+.txt-box,
+.doc-box{
+  padding: 20px 0;
+  line-height: 1.5;
+}
+
+table{
+  width: 100%;
+  margin-top: 40px;
+}
+
+table tr{
+  border-top: 1px solid #000000;
+  padding: 20px 0;
+}
+
+td{
+  padding: 20px;
+}

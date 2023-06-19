@@ -1,0 +1,88 @@
+.box {
+  width: 400px;
+  margin: 50px auto 100px;
+  border: 1px solid #b7b4b4;
+  border-radius: 5px;
+}
+
+.alert {
+  width: 400px;
+  margin: 100px auto 0;
+}
+
+.upload-ttl {
+  padding: 30px 0;
+  background-color: #d4cfcf;
+  font-size: 25px;
+  text-align: center;
+}
+
+.image-box {
+  margin: 20px 20px;
+}
+
+.upload-btn {
+  display: block;
+  width: 90%;
+  margin: 0 auto 10px;
+  padding: 10px 0;
+  border: 0;
+  background-color: #5656e6;
+  color: #ffffff;
+  border-radius: 5px;
+}
+
+.image-box input {
+  margin-bottom: 10px;
+}
+
+.image-box .error-msg {
+  color: red;
+}
+
+.image-gallery {
+  width: 60%;
+  margin: 0 auto 50px;
+}
+
+.image-gallery .card {
+  width: 100%;
+  padding-top: 30px;
+}
+
+.card ul li {
+  position: relative;
+  width: 30%;
+  margin-bottom: 30px;
+}
+
+.card ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.img-detail-box {
+  position: absolute;
+  right: 0;
+  bottom: 5px;
+  left: 0;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.img-detail-box p {
+  margin-bottom: 5px;
+  padding: 0;
+  font-size: 14px;
+}
+
+.btn-danger {
+  width: 95%;
+}
+
+img {
+  width: 100%;
+}

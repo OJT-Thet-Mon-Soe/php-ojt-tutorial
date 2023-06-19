@@ -1,0 +1,31 @@
+.chessboard-box {
+  padding: 150px 0;
+  text-align: center;
+}
+
+.chessboard-ttl {
+  margin-bottom: 30px;
+  font-size: 25px;
+}
+
+table {
+  display: inline-block;
+  margin-bottom: 25px;
+  border: 1px solid #000000;
+}
+
+.white {
+  width: 40px;
+  height: 40px;
+  background-color: #ffffff;
+}
+
+.black {
+  width: 40px;
+  height: 40px;
+  background-color: #000000;
+}
+
+.vali-error {
+  color: #ff0000;
+}
