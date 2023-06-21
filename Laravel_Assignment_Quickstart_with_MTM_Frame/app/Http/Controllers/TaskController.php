@@ -5,41 +5,34 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\TaskStoreRequest;
 use App\Contracts\Services\TaskServiceInterface;
 
 class TaskController extends Controller
 {
     // Interface
     private $taskService;
-    function __construct(TaskServiceInterface $taskServiceInterface){
+    public function __construct(TaskServiceInterface $taskServiceInterface){
         $this->taskService = $taskServiceInterface;
     }
 
-    function task(){
-        $getTask = $this->taskService->getServiceTask();
-        return view('task')->with(['getTask'=>$getTask]);
+    public function index(){
+        $tasks = $this->taskService->getServiceTask();
+
+        return view('task')->with(['tasks'=>$tasks]);
     }
 
-    function create(Request $request){
-        $data = [
-            "name" => $request->name,
-        ];
+    public function store(TaskStoreRequest $request){
 
-        if($this->taskService->createTaskService($data)){
-            $validator = $this->taskService->createTaskService($data);
-            if($validator->fails()){
-                return back()
-                    ->withInput()
-                    ->withErrors($validator);
-                }
-        }
-        return redirect()->route('task')->with(['create'=>"create"]);
+        $this->taskService->createTaskService($request);
+
+        return to_route('task.index')->with(['success'=>"Create Successfully"]);
 
     }
 
-    function delete(Request $request){
-        $id = $request->id;
+    public function destroy($id){
         $this->taskService->deleteTaskService($id);
-        return redirect()->route('task')->with(['delete'=>"delete"]);
+
+        return to_route('task.index')->with(['delete'=>"Delete Successfully"]);
     }
 }

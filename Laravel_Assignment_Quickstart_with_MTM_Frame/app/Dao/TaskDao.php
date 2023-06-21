@@ -11,19 +11,18 @@ class TaskDao implements TaskDaoInterface{
         return Task::get();
     }
 
-    public function createTaskDao($data)
+    public function createTaskDao($request)
     {
-        $validator = Validator::make($data,[
-            'name' => 'required'
-        ]);
-        return $validator;
-        
+        $data = [
+            "name" => $request->name,
+        ];
+
         Task::create($data);
     }
 
     public function deleteTaskDao($id): void
     {
-        Task::where("id",$id)->delete();
+        Task::findOrfail($id)->delete();
     }
 
 }
