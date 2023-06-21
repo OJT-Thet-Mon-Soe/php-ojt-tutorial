@@ -2,15 +2,15 @@
 
 @section('content')
 
-    @if (session("create"))
+    @if (session("success"))
         <div class="w-25 mx-auto my-3">
             <div class="alert alert-success">
-                Create successfully !
+                {{session("success")}}
             </div>
         </div>
     @endif
     <div class="card w-25 mx-auto p-5 mb-5">
-        <form action="{{ route('task#create') }}" method="POST" class="form-horizontal">
+        <form action="{{ route('task.store') }}" method="POST" class="form-horizontal">
             @csrf
 
             <div class="form-group">
@@ -37,7 +37,7 @@
     @if (session("delete"))
         <div class="w-25 mx-auto my-3">
             <div class="alert alert-danger">
-                Delete successfully !
+                {{session("delete")}}
             </div>
         </div>
     @endif
@@ -50,12 +50,13 @@
                 <th>Task</th>
                 <th></th>
             </tr>
-            @foreach ($getTask as $task)
+            @foreach ($tasks as $task)
                 <tr>
                     <td>{{ $task->name }}</td>
                     <td>
-                        <form action="{{route('task#delete',['id'=>$task->id])}}" method="post">
+                        <form action="{{route('task.destroy',['id'=>$task->id])}}" method="post">
                             @csrf
+                            @method("delete")
                             <button type="submit" class="btn btn-danger">Delete</button>
                         </form>
                     </td>

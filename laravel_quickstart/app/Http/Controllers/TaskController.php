@@ -9,12 +9,14 @@ use Illuminate\Support\Facades\Validator;
 
 class TaskController extends Controller
 {
-    function task(){
-        $getTask = Task::get();
-        return view('task')->with(['getTask'=>$getTask]);
+    public function index(){
+        $tasks = Task::get();
+
+        return view('task')->with(['tasks'=>$tasks]);
     }
 
-    function create(Request $request){
+    public function store(Request $request)
+    {
         $data = [
             "name" => $request->name,
         ];
@@ -22,12 +24,14 @@ class TaskController extends Controller
             'name' => 'required'
         ])->validate();
         Task::create($data);
-        return redirect()->route('task')->with(['create'=>"create"]);
+
+        return to_route("task.index")->with(['success'=>"Create Successfully"]);
     }
 
-    function delete(Request $request){
-        $id = $request->id;
-        Task::where("id",$id)->delete();
-        return redirect()->route('task')->with(['delete'=>"delete"]);
+    public function destroy($id)
+    {
+        Task::findOrFail($id)->delete();
+
+        return to_route('task.index')->with(['delete'=>"Delete Successfully"]);
     }
 }

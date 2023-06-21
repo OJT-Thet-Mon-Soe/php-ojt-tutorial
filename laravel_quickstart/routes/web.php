@@ -7,7 +7,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/task',[TaskController::class,'task'])->name("task");
-Route::post('/task/create',[TaskController::class,'create'])->name("task#create");
-Route::post('/task/delete/{id}',[TaskController::class,'delete'])->name("task#delete");
+Route::get('/task',[TaskController::class,'index'])->name("task.index");
+Route::post('/task/store',[TaskController::class,'store'])->name("task.store");
+Route::delete('/task/{id}',[TaskController::class,'destroy'])->name("task.destroy");
 
