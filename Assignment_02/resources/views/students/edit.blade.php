@@ -8,6 +8,7 @@
             <div class="card-body">
                 <form action="{{ route('student.update', ['id' => $student->id]) }}" method="POST">
                     @csrf
+                    @method("patch")
                     <label class="form-label mt-2">Name</label>
                     <input type="text" name="name" class="form-control mt-2" placeholder="Enter your name"
                         value="{{ old('name', $student->name) }}">
@@ -18,7 +19,8 @@
                     <select class="form-select mt-2" aria-label="Default select example" name="majorId">
                         <option value="">Choose major ...</option>
                         @foreach ($majors as $major)
-                            <option value="{{ $major->id }}">{{ $major->name }}</option>
+                            <option value="{{ $major->id }}" @if (old('majorId', $student->major_id) == $major->id) selected @endif>
+                                {{ $major->name }}</option>
                         @endforeach
                     </select>
                     @error('majorId')

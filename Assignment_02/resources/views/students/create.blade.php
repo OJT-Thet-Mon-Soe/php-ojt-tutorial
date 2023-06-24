@@ -18,7 +18,8 @@
                     <select class="form-select mt-2" aria-label="Default select example" name="majorId">
                         <option value="">Choose major ...</option>
                         @foreach ($majors as $major)
-                            <option value="{{ $major->id }}">{{ $major->name }}</option>
+                            <option value="{{ $major->id }}" {{ old('majorId') == $major->id ? 'selected' : '' }}>
+                                {{ $major->name }}</option>
                         @endforeach
                     </select>
                     @error('majorId')

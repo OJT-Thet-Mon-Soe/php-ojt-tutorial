@@ -25,7 +25,7 @@ class StudentController extends Controller
     {
         $students = $this->studentDao->getStudent();
 
-        return view("students.index")->with(["students" => $students]);
+        return view("students.index", compact("students"));
     }
 
     // create
@@ -33,7 +33,7 @@ class StudentController extends Controller
     {
         $majors = $this->studentDao->getMajor();
 
-        return view("students.create")->with(["majors" => $majors]);
+        return view("students.create", compact("majors"));
     }
 
     // store
@@ -50,7 +50,7 @@ class StudentController extends Controller
         $student = $this->studentDao->editStudent($id);
         $majors = $this->studentDao->getMajor();
 
-        return view("students.edit")->with(["student" => $student, "majors" => $majors]);
+        return view("students.edit", compact("student", "majors"));
     }
 
     // update

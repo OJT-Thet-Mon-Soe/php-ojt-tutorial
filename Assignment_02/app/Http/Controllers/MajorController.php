@@ -24,7 +24,7 @@ class MajorController extends Controller
     {
         $majors = $this->majorService->getMajor();
 
-        return view("majors.index")->with(["majors" => $majors]);
+        return view("majors.index", compact("majors"));
     }
 
     // create
