@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 class MajorController extends Controller
 {
     private $majorService;
+
     public function __construct(MajorServiceInterface $majorServiceInterface)
     {
         $this->majorService = $majorServiceInterface;
@@ -22,7 +23,8 @@ class MajorController extends Controller
     public function index(): View
     {
         $majors = $this->majorService->getMajor();
-        return view("majors.index")->with(["majors" => $majors]);
+
+        return view("majors.index", compact("majors"));
     }
 
     // create

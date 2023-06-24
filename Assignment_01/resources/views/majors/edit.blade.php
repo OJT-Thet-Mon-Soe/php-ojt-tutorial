@@ -6,8 +6,9 @@
                 Major Edit
             </div>
             <div class="card-body">
-                <form action="{{ route('major.update', ['id' => $major->id]) }}" method="POST">
+                <form action="{{ route('major.update', ['id' => $major->id]) }}" method="post">
                     @csrf
+                    @method('patch')
                     <label class="form-label">Name</label>
                     <input type="text" name="name" class="form-control" placeholder="Enter major name"
                         value="{{ old('name', $major->name) }}">

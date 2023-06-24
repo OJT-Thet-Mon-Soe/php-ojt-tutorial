@@ -6,7 +6,7 @@
                 Student Create
             </div>
             <div class="card-body">
-                <form action="{{ route('student.store') }}" method="POST">
+                <form action="{{ route('student.store') }}" method="POST" id="myForm">
                     @csrf
                     <label class="form-label mt-2">Name</label>
                     <input type="text" name="name" class="form-control mt-2" placeholder="Enter your name"
@@ -18,7 +18,8 @@
                     <select class="form-select mt-2" aria-label="Default select example" name="majorId">
                         <option value="">Choose major ...</option>
                         @foreach ($majors as $major)
-                            <option value="{{ $major->id }}">{{ $major->name }}</option>
+                            <option value="{{ $major->id }}" {{ old('majorId') == $major->id ? 'selected' : '' }}>
+                                {{ $major->name }}</option>
                         @endforeach
                     </select>
                     @error('majorId')

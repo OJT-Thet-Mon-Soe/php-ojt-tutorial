@@ -27,6 +27,14 @@
         </div>
     </nav>
     @yield('content')
+
+    <script>
+        function confirmDelete() {
+            if (confirm("Are you sure you want to delete this item?")) {
+                document.getElementById('deleteForm').submit();
+            }
+        }
+    </script>
 </body>
 
 </html>

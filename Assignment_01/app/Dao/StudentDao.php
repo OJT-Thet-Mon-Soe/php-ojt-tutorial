@@ -10,7 +10,7 @@ class StudentDao implements StudentDaoInterface
 {
     public function getStudent(): object
     {
-        return Student::select("students.*", "majors.name as major_name")->join('majors', 'students.major_id', '=', 'majors.id')->get();
+        return Student::get();
     }
 
     public function getMajor()

@@ -12,38 +12,51 @@
             <div class="card-header fs-5 fw-bold">
                 Student Lists
             </div>
-            <div class="card-body">
-                <table class="table table-striped">
-                    <tr>
-                        <th>Id</th>
-                        <th>Name</th>
-                        <th>Major</th>
-                        <th>Phone</th>
-                        <th>Email</th>
-                        <th>Address</th>
-                        <th>Actions</th>
-                    </tr>
-                    @foreach ($students as $student)
+            @if ($students->isEmpty() == false)
+                <div class="card-body">
+                    <table class="table table-striped">
                         <tr>
-                            <td>{{ $student->id }}</td>
-                            <td>{{ $student->name }}</td>
-                            <td>{{ $student->major_name }}</td>
-                            <td>{{ $student->phone }}</td>
-                            <td>{{ $student->email }}</td>
-                            <td>{{ $student->address }}</td>
-                            <td>
-                                <a href="{{ route('student.edit', ['id' => $student->id]) }}" class="btn btn-success">Edit</a>
-                                <form action="{{ route('student.destroy', ['id' => $student->id]) }}" method="post"
-                                    class="d-inline">
-                                    @csrf
-                                    @method('delete')
-                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                </form>
-                            </td>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Major</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Address</th>
+                            <th>Actions</th>
                         </tr>
-                    @endforeach
-                </table>
-            </div>
+
+                        @foreach ($students as $student)
+                            <tr>
+                                <td>{{ $student->id }}</td>
+                                <td>{{ $student->name }}</td>
+                                <td>{{ $student->major->name }}</td>
+                                <td>{{ $student->phone }}</td>
+                                <td>{{ $student->email }}</td>
+                                <td>
+                                    @if (strlen($student->address) > 50)
+                                        {{ substr($student->address, 0, 50) . '...' }}
+                                    @else
+                                        {{ $student->address }}
+                                    @endif
+                                </td>
+                                <td>
+                                    <a href="{{ route('student.edit', ['id' => $student->id]) }}"
+                                        class="btn btn-success">Edit</a>
+                                    <form action="{{ route('student.destroy', ['id' => $student->id]) }}" method="post"
+                                        class="d-inline" id="deleteForm">
+                                        @csrf
+                                        @method('delete')
+                                        <button type="button" onclick="confirmDelete()"
+                                            class="btn btn-danger">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </table>
+                </div>
+            @else
+                <h3 class="text-center my-5">There is no data.</h3>
+            @endif
         </div>
     </div>
 @endsection
