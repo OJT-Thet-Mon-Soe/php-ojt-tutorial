@@ -17,8 +17,15 @@
             </div>
         </div>
         <div class="card">
-            <div class="card-header fs-5 fw-bold">
-                Student Lists
+            <div class="card-header fs-5 fw-bold d-flex justify-content-between align-items-center">
+                <h4>Student Lists</h4>
+                <div class="w-25">
+                    <form action="{{route("student.index")}}" method="GET">
+                        @csrf
+                        <input type="text" name="searchKey" value="{{ request()->input('searchKey') }}" class="form-control w-75 d-inline" placeholder="search ...">
+                        <button type="submit" class="btn btn-outline-primary">Search</button>
+                    </form>
+                </div>
             </div>
             @if ($students->isEmpty() == false)
                 <div class="card-body">
