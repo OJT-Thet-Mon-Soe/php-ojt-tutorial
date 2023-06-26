@@ -44,7 +44,13 @@
                                 <td>{{ $student->major->name }}</td>
                                 <td>{{ $student->phone }}</td>
                                 <td>{{ $student->email }}</td>
-                                <td>{{ $student->address }}</td>
+                                <td>
+                                    @if (strlen($student->address) > 50)
+                                        {{ substr($student->address, 0, 50) . '...' }}
+                                    @else
+                                        {{ $student->address }}
+                                    @endif
+                                </td>
                                 <td>
                                     <a href="{{ route('student.edit', ['id' => $student->id]) }}"
                                         class="btn btn-success">Edit</a>
