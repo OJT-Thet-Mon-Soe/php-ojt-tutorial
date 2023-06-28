@@ -92,6 +92,7 @@ class StudentController extends Controller
     // destroy
     public function destroy($id): RedirectResponse
     {
+        dd($id);
         $this->studentDao->destoryStudent($id);
 
         return to_route('student.index')->with(['delete' => "Delete Successfully"]);
