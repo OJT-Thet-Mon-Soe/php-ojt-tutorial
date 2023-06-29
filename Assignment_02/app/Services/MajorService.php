@@ -8,6 +8,7 @@ use App\Contracts\Services\MajorServiceInterface;
 class MajorService implements MajorServiceInterface
 {
     private $majorDao;
+
     public function __construct(MajorDaoInterface $majorDaoInterface)
     {
         $this->majorDao = $majorDaoInterface;

@@ -2,6 +2,9 @@
 
 namespace App\Services;
 
+use App\Exports\StudentExport;
+use App\Imports\StudentImport;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Contracts\Dao\StudentDaoInterface;
 use App\Contracts\Services\StudentServiceInterface;
 
@@ -40,12 +43,14 @@ class StudentService implements StudentServiceInterface
 
     public function exportExcel()
     {
-        return $this->studentDao->exportExcel();
+        return Excel::download(new StudentExport(), 'student.xlsx');
     }
 
     public function importExcel($request)
     {
-        return $this->studentDao->importExcel($request);
+        $file = $request->file('excelFile');
+
+        return Excel::import(new StudentImport, $file);
     }
 
     public function updateStudent($data, $id): void

@@ -27,10 +27,10 @@
                                     <td>
                                         <a href="{{ route('major.edit', ['id' => $major->id]) }}" class="btn btn-success">Edit</a>
                                         <form action="{{ route('major.destroy', ['id' => $major->id]) }}" method="post"
-                                            class="d-inline" id="deleteForm">
+                                            class="d-inline" id="deleteForm-{{$major->id}}">
                                             @csrf
                                             @method('delete')
-                                            <button type="button" onclick="confirmDelete()" class="btn btn-danger">Delete</button>
+                                            <button type="button" onclick="confirmDelete({{$major->id}})" class="btn btn-danger">Delete</button>
                                         </form>
                                     </td>
                                 </tr>

@@ -4,7 +4,7 @@
         @if (session('excelError'))
             @foreach (session('excelError') as $failure)
                 <div class="alert alert-danger mb-3">
-                    Email is already been taken in line No {{ $failure->row() }} !
+                    Email is already been taken in line No {{ $failure->row()-1 }} !
                 </div>
             @endforeach
         @endif

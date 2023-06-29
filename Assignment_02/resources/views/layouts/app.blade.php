@@ -29,9 +29,9 @@
     @yield('content')
 
     <script>
-        function confirmDelete() {
+        function confirmDelete(id) {
             if (confirm("Are you sure you want to delete this item?")) {
-                document.getElementById('deleteForm').submit();
+                document.getElementById('deleteForm-'+id).submit();
             }
         }
     </script>

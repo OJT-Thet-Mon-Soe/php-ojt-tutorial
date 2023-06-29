@@ -51,10 +51,10 @@
                                     <a href="{{ route('student.edit', ['id' => $student->id]) }}"
                                         class="btn btn-success">Edit</a>
                                     <form action="{{ route('student.destroy', ['id' => $student->id]) }}" method="post"
-                                        class="d-inline" id="deleteForm">
+                                        class="d-inline" id="deleteForm-{{$student->id}}">
                                         @csrf
                                         @method('delete')
-                                        <button type="button" onclick="confirmDelete()"
+                                        <button type="button" onclick="confirmDelete({{$student->id}})"
                                             class="btn btn-danger">Delete</button>
                                     </form>
                                 </td>

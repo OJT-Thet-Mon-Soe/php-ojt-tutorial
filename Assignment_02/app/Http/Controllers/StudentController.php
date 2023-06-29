@@ -65,8 +65,6 @@ class StudentController extends Controller
     public function export()
     {
         return $this->studentDao->exportExcel();
-
-        return to_route("student.index");
     }
 
     // import
@@ -80,19 +78,18 @@ class StudentController extends Controller
     {
         try {
             $this->studentDao->importExcel($request);
+            return to_route('student.index')->with(["success" => "Import Successfully !"]);
+
         } catch (ValidationException $e) {
             $failures = $e->failures();
 
             return to_route('student.import')->with(["excelError" => $failures]);
         }
-
-        return to_route('student.index')->with(["success" => "Import Successfully !"]);
     }
 
     // destroy
     public function destroy($id): RedirectResponse
     {
-        dd($id);
         $this->studentDao->destoryStudent($id);
 
         return to_route('student.index')->with(['delete' => "Delete Successfully"]);

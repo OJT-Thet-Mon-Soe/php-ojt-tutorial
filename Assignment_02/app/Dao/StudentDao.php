@@ -13,7 +13,6 @@ class StudentDao implements StudentDaoInterface
 {
     public function getStudent(): object
     {
-        // return Student::select("students.*", "majors.name as major_name")->join('majors', 'students.major_id', '=', 'majors.id')->get();
         return Student::get();
     }
 
@@ -50,18 +49,6 @@ class StudentDao implements StudentDaoInterface
         ];
 
         Student::where("id", $id)->update($data);
-    }
-
-    public function exportExcel()
-    {
-        return Excel::download(new StudentExport(), 'student.xlsx');
-    }
-
-    public function importExcel($request)
-    {
-        $file = $request->file('excelFile');
-
-        return Excel::import(new StudentImport, $file);
     }
 
     public function destoryStudent($id): void

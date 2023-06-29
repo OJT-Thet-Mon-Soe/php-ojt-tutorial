@@ -54,6 +54,7 @@ class StudentController extends Controller
     // update
     public function update(StudentUpdateRequest $request, $id): RedirectResponse
     {
+    
         $this->studentDao->updateStudent($request, $id);
 
         return to_route("student.index")->with(["success" => "Update Successfully"]);
