@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Student;
 use Illuminate\Contracts\View\View;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\StudentCreateRequest;
 use App\Http\Requests\StudentUpdateRequest;
 use App\Contracts\Services\StudentServiceInterface;
@@ -22,22 +20,17 @@ class StudentController extends Controller
     // index
     public function index(): View
     {
-        return view("students.index");
-    }
-
-    // show
-    public function show(){
         $students = $this->studentDao->getStudent();
 
-        return response()->json($students);
+        return view("students.index", compact("students"));
     }
 
-    // create
-    public function create(): View
+    // major
+    public function major()
     {
         $majors = $this->studentDao->getMajor();
 
-        return view("students.create", compact("majors"));
+        return response()->json($majors);
     }
 
     // store
@@ -54,7 +47,7 @@ class StudentController extends Controller
         $student = $this->studentDao->editStudent($id);
         $majors = $this->studentDao->getMajor();
 
-        return response()->json(["student"=>$student,"majors"=>$majors]);
+        return response()->json(["student" => $student, "majors" => $majors]);
     }
 
     // update

@@ -1,23 +1,26 @@
 @extends('layouts.app')
 @section('content')
     <div class="container pt-5">
-        <div class="alert alert-danger w-25 d-none" id="deleteSuccess">Delete Successfully !</div>
         <!-- Button trigger modal -->
-        <button type="button" id="originCreateButton" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            Create
-        </button>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <button type="button" id="originCreateButton" class="btn btn-primary" data-bs-toggle="modal"
+                data-bs-target="#createModal">
+                Create
+            </button>
+            <div class="alert alert-success d-none" id="success">Create Successfully !</div>
+            <div class="alert alert-danger w-25 d-none" id="deleteSuccess">Delete Successfully !</div>
+            <div class="alert alert-success d-none" id="successUpdate">Update Successfully !</div>
+        </div>
 
         <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Major Create</h1>
-                        <button type="button" class="btn-close" onclick="closeBtn()" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
+                        <h1 class="modal-title fs-5" id="createModalLabel">Major Create</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <div class="alert alert-success d-none" id="success">Create Successfully !</div>
                         <form>
                             <label class="form-label">Name</label>
                             <input type="text" id="name" class="form-control" placeholder="Enter major name">
@@ -25,10 +28,8 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" onclick="closeBtn()"
-                            data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" id="createBtn">Create</button>
-
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="createBtn" onclick="createBtn()">Create</button>
                     </div>
                 </div>
             </div>
@@ -47,22 +48,34 @@
                         </tr>
                     </thead>
                     <tbody id="tableData">
-
+                        @foreach ($majors as $major)
+                            <tr>
+                                <td>{{ $major->id }}</td>
+                                <td id="updateId-{{ $major->id }}">{{ $major->name }}</td>
+                                <td>
+                                    <button type="button" class="btn btn-primary" id="edit-{{ $major->id }}" onclick="editMajor({{ $major->id }})"
+                                        data-bs-toggle="modal" data-bs-target="#editModal">
+                                        Edit
+                                    </button>
+                                    <button type="button" id="deleting-{{ $major->id }}"
+                                        onclick="confirmDelete({{ $major->id }})" class="btn btn-danger">Delete</button>
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
         </div>
         <!-- Modal -->
-        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Major Edit</h1>
+                        <h1 class="modal-title fs-5" id="editModalLabel">Major Edit</h1>
                         <button type="button" class="btn-close" onclick="closeEditBtn()" data-bs-dismiss="modal"
                             aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <div class="alert alert-success d-none" id="successUpdate">Update Successfully !</div>
                         <form>
                             <input type="hidden" id="editId">
                             <label class="form-label">Name</label>
@@ -81,7 +94,6 @@
         </div>
 
     </div>
-
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="{{asset('js/major.js')}}"></script>
+    <script src="{{ asset('js/major.js') }}"></script>
 @endsection

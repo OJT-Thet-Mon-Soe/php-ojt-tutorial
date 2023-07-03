@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Major;
-use Illuminate\Contracts\View\View;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MajorCreateRequest;
 use App\Http\Requests\MajorUpdateRequest;
@@ -24,21 +22,6 @@ class MajorController extends Controller
         $majors = $this->majorService->getMajor();
 
         return view("majors.index", compact("majors"));
-
-    }
-
-    // show
-    public function show()
-    {
-        $majors = $this->majorService->getMajor();
-
-        return response()->json($majors);
-    }
-
-    // create
-    public function create(): View
-    {
-        return view("majors.create");
     }
 
     // store
@@ -47,15 +30,6 @@ class MajorController extends Controller
         $majors = $this->majorService->storeMajor($request);
 
         return response()->json($majors);
-    }
-
-    // edit
-    public function edit($id)
-    {
-        $major = $this->majorService->editMajor($id);
-
-        return response()->json($major);
-
     }
 
     // update

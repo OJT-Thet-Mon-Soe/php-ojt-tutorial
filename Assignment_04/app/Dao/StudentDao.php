@@ -54,7 +54,6 @@ class StudentDao implements StudentDaoInterface
 
         Student::where("id", $id)->update($data);
 
-        return Student::with("major")->where("id",$id)->first();
-
+        return Student::with("major")->where("id", $id)->first();
     }
 }

@@ -5,7 +5,7 @@ namespace App\Contracts\Dao;
 interface MajorDaoInterface
 {
     public function getMajor(): object;
-    
+
     public function storeMajor($request);
 
     public function destoryMajor($id): void;

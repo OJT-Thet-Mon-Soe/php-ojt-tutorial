@@ -1,56 +1,30 @@
-// get data
+// get major data
 axios({
     method: 'get',
-    url: 'student/show',
+    url: 'student/major',
     responseType: 'json'
 })
     .then(function (response) {
         var datas = response.data;
         datas.forEach(data => {
             let myData = `
-                        <tr>
-                            <td>${data["id"]}</td>
-                            <td id="updateName-${data["id"]}">${data["name"]}</td>
-                            <td id="updateMajorName-${data["id"]}">${data.major["name"]}</td>
-                            <td id="updatePhone-${data["id"]}">${data["phone"]}</td>
-                            <td id="updateEmail-${data["id"]}">${data["email"]}</td>
-                            <td id="updateAddress-${data["id"]}">${data["address"]}</td>
-
-                            <td>
-                                <button type="button" class="btn btn-primary" onclick="editStudent(${data["id"]})" data-bs-toggle="modal" data-bs-target="#editModal">
-                                    Edit
-                                </button>
-                                <button type="button" id="deleting-${data['id']}" onclick="confirmDelete(${data["id"]})" class="btn btn-danger">Delete</button>
-                            </td>
-                        </tr>
-                    `;
-            document.getElementById("tableData").innerHTML += myData;
-        });
-    });
-
-// get major
-axios({
-    method: 'get',
-    url: 'major/show',
-    responseType: 'json'
-})
-    .then(function (response) {
-        var datas = response.data;
-        datas.forEach(data => {
-            let myData = `
-                        <option value="${data["id"]}">${data["name"]}</option>
-                    `;
+                    <option value="${data["id"]}">${data["name"]}</option>
+                `;
             document.getElementById("majorId").innerHTML += myData;
         });
     });
 
 // create student
 function createStudentBtn() {
+
     let name = document.getElementById("name").value;
     let phone = document.getElementById("phone").value;
     let email = document.getElementById("email").value;
     let address = document.getElementById("address").value;
     let majorId = document.getElementById("majorId").value;
+
+    document.getElementById("deleteSuccess").classList.add("d-none");
+    document.getElementById("successUpdate").classList.add("d-none");
 
     let createData = {
         "name": name,
@@ -69,6 +43,9 @@ function createStudentBtn() {
     axios.post('student', createData)
         .then(response => {
             var data = response.data;
+            if (data["address"].length > 50) {
+                address = data["address"].substring(0, 50) + '...';
+            }
             let myData = `
                     <tr>
                         <td>${data["id"]}</td>
@@ -76,7 +53,7 @@ function createStudentBtn() {
                         <td id="updateMajorName-${data["id"]}">${data.major["name"]}</td>
                         <td id="updatePhone-${data["id"]}">${data["phone"]}</td>
                         <td id="updateEmail-${data["id"]}">${data["email"]}</td>
-                        <td id="updateAddress-${data["id"]}">${data["address"]}</td>
+                        <td id="updateAddress-${data["id"]}">${address}</td>
 
                         <td>
                             <button type="button" class="btn btn-primary" onclick="editStudent(${data["id"]})" data-bs-toggle="modal" data-bs-target="#editModal">
@@ -88,20 +65,18 @@ function createStudentBtn() {
                     `;
             document.getElementById("tableData").innerHTML += myData;
 
-            errAddress.innerHTML = "";
-            errEmail.innerHTML = "";
-            errPhone.innerHTML = "";
-            errName.innerHTML = "";
-            errMajorId.innerHTML = "";
-
-            document.getElementById("name").value = "";
-            document.getElementById("email").value = "";
-            document.getElementById("phone").value = "";
-            document.getElementById("address").value = "";
-            document.getElementById("majorId").value = "";
-
             document.getElementById("successStore").classList.remove("d-none");
 
+            document.getElementById("majorId").value = "";
+
+            let createModal = document.getElementById("createModal");
+            let modal = bootstrap.Modal.getInstance(createModal);
+            modal.hide();
+
+            let errorMessageElement = document.getElementById("createModal").querySelectorAll(".error");
+            errorMessageElement.forEach(err => {
+                err.innerHTML = "";
+            });
         })
         .catch(error => {
             if (error.response) {
@@ -132,67 +107,51 @@ function createStudentBtn() {
                 }
             }
         });
-
 }
 
-// btn close create
-function btnCloseStudentCreate() {
-    document.getElementById("name").value = "";
-    document.getElementById("phone").value = "";
-    document.getElementById("email").value = "";
-    document.getElementById("address").value = "";
+function createBtnClose() {
+    const errorMessageElement = document.getElementById("createModal").querySelectorAll(".error");
+    errorMessageElement.forEach(err => {
+        err.innerHTML = "";
+    });
+
     document.getElementById("majorId").value = "";
-
-    document.getElementById("errAddress").innerHTML = "";
-    document.getElementById("errEmail").innerHTML = "";
-    document.getElementById("errPhone").innerHTML = "";
-    document.getElementById("errName").innerHTML = "";
-    document.getElementById("errMajorId").innerHTML = "";
-
-    document.getElementById("successStore").classList.add("d-none");
 }
 
-// delete data
-function confirmDelete(id) {
-    if (confirm("Are you sure you want to delete this item?")) {
-        const childDelete = document.getElementById(`deleting-${id}`).parentNode;
-        const parentDelete = childDelete.parentNode;
-        parentDelete.parentNode.removeChild(parentDelete);
+document.addEventListener("DOMContentLoaded", function () {
+    const modalElement = document.getElementById("createModal");
 
-        axios({
-            method: 'delete',
-            url: 'student/' + id,
-            responseType: 'json'
-        })
-            .then(function (response) {
-                if (response.data) {
-                    document.getElementById("deleteSuccess").classList.remove("d-none");
-                }
-            });
-    }
-}
+    modalElement.addEventListener("hidden.bs.modal", function () {
+        const inputElements = modalElement.querySelectorAll("input");
+        inputElements.forEach(function (inputElement) {
+            inputElement.value = "";
+        });
+    });
+});
 
 // edit student
 function editStudent(id) {
+    let row = document.getElementById("edit-" + id).parentNode.parentNode;
+    let cols = row.querySelectorAll("td");
+
+    document.getElementById("editId").value = cols[0].innerHTML;
+    document.getElementById("editName").value = cols[1].innerHTML;
+    document.getElementById("editPhone").value = cols[3].innerHTML;
+    document.getElementById("editEmail").value = cols[4].innerHTML;
+    document.getElementById("editAddress").value = cols[5].innerHTML.trimStart();
+
+    // get major
     axios({
         method: 'get',
-        url: 'student/' + id + '/edit',
+        url: 'student/major',
         responseType: 'json'
     })
         .then(function (response) {
-            let student = response.data.student;
-            let majors = response.data.majors;
-
-            document.getElementById("editName").value = student["name"];
-            document.getElementById("editPhone").value = student["phone"];
-            document.getElementById("editEmail").value = student["email"];
-            document.getElementById("editAddress").value = student["address"];
-            document.getElementById("editId").value = student["id"];
-
-            majors.forEach(major => {
+            var datas = response.data;
+            datas.forEach(data => {
                 let myData = `
-                            <option value="${major["id"]}" ${major["id"] == student["major_id"] ? "selected" : ""}>${major["name"]}</option>
-                        `;
+                        <option value="${data["id"]}" ${data["name"] == cols[2].innerHTML ? "selected" : ""}>${data["name"]}</option>
+                    `;
                 document.getElementById("editMajorId").innerHTML += myData;
             });
         });
@@ -200,19 +159,16 @@ function editStudent(id) {
 
 // btn close for update
 function btnCloseStudentUpdate() {
-    document.getElementById("editMajorId").innerHTML = "";
     document.getElementById("errUpdateAddress").innerHTML = "";
     document.getElementById("errUpdateEmail").innerHTML = "";
     document.getElementById("errUpdatePhone").innerHTML = "";
     document.getElementById("errUpdateName").innerHTML = "";
     document.getElementById("errUpdateMajorId").innerHTML = "";
-    document.getElementById("successUpdate").classList.add("d-none");
 }
 
 // update
 function updateStudentBtn() {
     let editId = document.getElementById("editId").value;
-    console.log(editId);
     let name = document.getElementById("editName").value;
     let phone = document.getElementById("editPhone").value;
     let email = document.getElementById("editEmail").value;
@@ -235,13 +191,10 @@ function updateStudentBtn() {
 
     axios.patch('student/' + editId, updateData)
         .then(function (response) {
-            console.log(response.data.id);
+
             document.getElementById("successUpdate").classList.remove("d-none");
-            document.getElementById("editName").value = "";
-            document.getElementById("editPhone").value = "";
-            document.getElementById("editEmail").value = "";
-            document.getElementById("editAddress").value = "";
-            document.getElementById("editMajorId").value = "";
+            document.getElementById("successStore").classList.add("d-none");
+            document.getElementById("deleteSuccess").classList.add("d-none");
 
             document.getElementById("updateName-" + response.data.id).innerHTML = response.data.name;
             document.getElementById("updateMajorName-" + response.data.id).innerHTML = response.data.major.name;
@@ -249,13 +202,22 @@ function updateStudentBtn() {
             document.getElementById("updateEmail-" + response.data.id).innerHTML = response.data.email;
             document.getElementById("updateAddress-" + response.data.id).innerHTML = response.data.address;
 
+            document.getElementById("editMajorId").innerHTML += "";
+
+            let editModal = document.getElementById("editModal");
+            let myEditModal = bootstrap.Modal.getInstance(editModal);
+            myEditModal.hide();
+
+            let option = document.getElementById("editMajorId").querySelectorAll("option");
+            document.getElementById("editMajorId").innerHTML = option[0];
+
             errUpdateAddress.innerHTML = "";
             errUpdateEmail.innerHTML = "";
             errUpdatePhone.innerHTML = "";
             errUpdateName.innerHTML = "";
             errUpdateMajorId.innerHTML = "";
+
         }).catch(error => {
-            console.log(error.response);
             if (error.response) {
                 if (error.response.data.errors.address) {
                     errUpdateAddress.innerHTML = error.response.data.errors.address;
@@ -284,5 +246,28 @@ function updateStudentBtn() {
                 }
             }
         });
+}
 
+// delete data
+function confirmDelete(id) {
+    if (confirm("Are you sure you want to delete this item?")) {
+
+        const childDelete = document.getElementById(`deleting-${id}`).parentNode;
+        const parentDelete = childDelete.parentNode;
+        parentDelete.parentNode.removeChild(parentDelete);
+
+        document.getElementById("successStore").classList.add("d-none");
+        document.getElementById("successUpdate").classList.add("d-none");
+
+        axios({
+            method: 'delete',
+            url: 'student/' + id,
+            responseType: 'json'
+        })
+            .then(function (response) {
+                if (response.data) {
+                    document.getElementById("deleteSuccess").classList.remove("d-none");
+                }
+            });
+    }
 }
