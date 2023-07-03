@@ -6,7 +6,7 @@ interface StudentDaoInterface
 {
     public function getStudent($request): object;
     public function getMajor();
-    public function storeStudent($request): void;
+    public function storeStudent($request): object;
     public function editStudent($id): object;
     public function updateStudent($data, $id): void;
     public function exportExcel();

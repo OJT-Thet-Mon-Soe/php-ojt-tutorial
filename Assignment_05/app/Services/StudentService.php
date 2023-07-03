@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Mail\StudentMail;
+use Illuminate\Support\Facades\Mail;
 use App\Contracts\Dao\StudentDaoInterface;
 use App\Contracts\Services\StudentServiceInterface;
 
@@ -25,7 +27,19 @@ class StudentService implements StudentServiceInterface
 
     public function storeStudent($request): void
     {
-        $this->studentDao->storeStudent($request);
+        $student = $this->studentDao->storeStudent($request);
+
+        $majorName = $student->major->name;
+        $mailData = [
+            "id" => $student->id,
+            "name" => $student->name,
+            "phone" => $student->phone,
+            "email" => $student->email,
+            "address" => $student->address,
+            "majorName" => $majorName,
+        ];
+
+        Mail::to($request->email)->send(new StudentMail($mailData));
     }
 
     public function destoryStudent($id): void

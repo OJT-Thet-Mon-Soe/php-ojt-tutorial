@@ -26,7 +26,7 @@ class StudentMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Welcome to TmsPrivateSchool ! New Student Information',
+            subject: 'Welcome to '.config('app.name').' ! New Student Information',
         );
     }
 

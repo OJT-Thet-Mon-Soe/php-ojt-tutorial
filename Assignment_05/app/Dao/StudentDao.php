@@ -34,7 +34,7 @@ class StudentDao implements StudentDaoInterface
         return Major::get();
     }
 
-    public function storeStudent($request): void
+    public function storeStudent($request): object
     {
         $data = [
             "name" => $request->name,
@@ -43,20 +43,9 @@ class StudentDao implements StudentDaoInterface
             "address" => $request->address,
             "major_id" => $request->majorId,
         ];
-        Student::create($data);
+        $student = Student::create($data);
 
-        $student = Student::with('major')->where("email", $request->email)->first();
-        $majorName = $student->major->name;
-        $mailData = [
-            "id" => $student->id,
-            "name" => $student->name,
-            "phone" => $student->phone,
-            "email" => $student->email,
-            "address" => $student->address,
-            "majorName" => $majorName,
-        ];
-
-        Mail::to($request->email)->send(new StudentMail($mailData));
+        return $student;
     }
 
     public function editStudent($id): object
